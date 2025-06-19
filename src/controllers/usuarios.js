@@ -44,6 +44,7 @@ const listarUsuarios = async (req, res) => {
 	}
 };
 
+//funcionando até aqui
 export default {
 	cadastrarUsuario,
 	listarUsuarios,
