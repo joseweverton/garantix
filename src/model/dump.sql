@@ -32,7 +32,9 @@ CREATE TABLE usuarios (
   senha VARCHAR(255) NOT NULL,
   funcao VARCHAR(50) NOT NULL,
   situacao_id INTEGER NOT NULL REFERENCES situacao(id),
-  nivel_acesso_id INTEGER NOT NULL REFERENCES niveis_acesso(id)
+  nivel_acesso_id INTEGER NOT NULL REFERENCES niveis_acesso(id),
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 -- Tabela de processos (depois das tabelas referenciadas)
 CREATE TABLE processos (
