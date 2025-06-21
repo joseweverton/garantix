@@ -5,9 +5,6 @@ const cadastrarUsuario = async (req, res) => {
 	try {
 		const senhaCriptografada = await bcrypt.hash(senha, 10);
 
-		// Verificação de inicidade de e-mail antes de enviar para o banco
-		const usuarioExistente = await knex("usuarios").where({ email }).first();
-
 		//persistindo no banco os dados da requisição
 		const usuario = await knex("usuarios")
 			.insert({
