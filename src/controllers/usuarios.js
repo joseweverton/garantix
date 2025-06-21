@@ -7,11 +7,7 @@ const cadastrarUsuario = async (req, res) => {
 
 		// Verificação de inicidade de e-mail antes de enviar para o banco
 		const usuarioExistente = await knex("usuarios").where({ email }).first();
-		if (usuarioExistente) {
-			return res
-				.status(400)
-				.json({ mensagem: "O e-mail informado já está em uso." });
-		}
+
 		//persistindo no banco os dados da requisição
 		const usuario = await knex("usuarios")
 			.insert({
@@ -39,12 +35,6 @@ const cadastrarUsuario = async (req, res) => {
 	} catch (error) {
 		console.error("Erro ao cadastrar usuário:", error); // Ajuda no debug
 
-		// Violação de restrição de unicidade (e.g., e-mail já cadastrado)
-		if (error.code === "23505") {
-			return res
-				.status(400)
-				.json({ mensagem: "O e-mail informado já está cadastrado." });
-		}
 		return res.status(500).json({ mensagem: "Erro interno do servidor" });
 	}
 };

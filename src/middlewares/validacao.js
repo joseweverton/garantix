@@ -1,6 +1,6 @@
 import knex from "../model/conexao.js";
 
-const validarCorpoRequisicao = (joiSchema) => async (req, res, next) => {
+export const validarCorpoRequisicao = (joiSchema) => async (req, res, next) => {
 	try {
 		await joiSchema.validateAsync(req.body);
 		next();
@@ -9,4 +9,19 @@ const validarCorpoRequisicao = (joiSchema) => async (req, res, next) => {
 	}
 };
 
-export default validarCorpoRequisicao;
+export const verificarEmailExistente = async (req, res, next) => {
+	const { email } = req.body;
+
+	try {
+		const emailExiste = await knex("usuarios").where({ email }).first();
+
+		if (emailExiste) {
+			return res.status(400).json({
+				mensagem: "Já existe usuário cadastrado com o e-mail informado.",
+			});
+		}
+		next();
+	} catch (error) {
+		return res.status(500).json({ mensagem: "Erro interno do servidor." });
+	}
+};
