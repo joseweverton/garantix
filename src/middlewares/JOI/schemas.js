@@ -6,7 +6,7 @@ import {
 	nivel_acesso_id,
 	nome,
 	senha,
-	situacao_id,
+	situacao,
 } from "./variaveis.js";
 
 const validarCamposUsuarios = Joi.object({
@@ -14,7 +14,7 @@ const validarCamposUsuarios = Joi.object({
 	email,
 	senha,
 	funcao,
-	situacao_id,
+	situacao,
 	nivel_acesso_id,
 });
 

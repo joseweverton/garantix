@@ -1,7 +1,8 @@
 import bcrypt from "bcrypt";
+import { situacao } from "../middlewares/JOI/variaveis.js";
 import knex from "../model/conexao.js";
 const cadastrarUsuario = async (req, res) => {
-	const { nome, email, senha, funcao, situacao_id, nivel_acesso_id } = req.body;
+	const { nome, email, senha, funcao, situacao, nivel_acesso_id } = req.body;
 	try {
 		const senhaCriptografada = await bcrypt.hash(senha, 10);
 
@@ -12,7 +13,7 @@ const cadastrarUsuario = async (req, res) => {
 				email,
 				senha: senhaCriptografada,
 				funcao,
-				situacao_id,
+				situacao,
 				nivel_acesso_id,
 			})
 			.returning([
@@ -20,7 +21,7 @@ const cadastrarUsuario = async (req, res) => {
 				"nome",
 				"email",
 				"funcao",
-				"situacao_id",
+				"situacao",
 				"nivel_acesso_id",
 			]);
 

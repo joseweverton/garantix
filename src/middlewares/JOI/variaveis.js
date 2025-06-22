@@ -41,20 +41,24 @@ export const funcao = Joi.string().required().messages({
 	"string.empty": "O campo função não informado",
 });
 
-export const situacao_id = Joi.number()
-	.strict()
-	.empty(["", "Não informado"])
+export const situacao = Joi.boolean()
+	.truthy("true")
+	.falsy("false")
 	.required()
 	.messages({
-		"any.required": "O campo situação do usuário é obrigatório.",
-		"number.base": "O campo situação do usuário deve conter apenas números.",
+		"boolean.base":
+			"O campo situação precisa ser um Verdadeiro (Ativo) ou Falso (Inativo)",
+		"any.required": "O campo situação do usuário é obrigatorio",
 	});
 
 export const nivel_acesso_id = Joi.number()
 	.strict()
 	.empty(["", "Não informado"])
 	.required()
+	.positive()
 	.messages({
 		"any.required": "O campo situação do usuário é obrigatório.",
-		"number.base": "O campo situação do usuário deve conter apenas números.",
+		"number.base":
+			"O campo situação do usuário deve conter o ID do nivel de acesso.",
+		"number.positive": "O ID do nivel de acesso deve ser positivo",
 	});
