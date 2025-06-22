@@ -17,6 +17,11 @@ export const email = Joi.string()
 		"string.base": "O campo email precisa estar no formato de texto.",
 	});
 
+export const senhaLogin = Joi.string().required().messages({
+	"any.required": "O campo senha é obrigatório",
+	"string.empty": "O campo senha é obrigatório",
+});
+
 //	ideal para criar um array no front para trazer os erros separadamente:
 export const senha = passwordComplexity({
 	min: 6,

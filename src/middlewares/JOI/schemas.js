@@ -6,10 +6,11 @@ import {
 	nivel_acesso_id,
 	nome,
 	senha,
+	senhaLogin,
 	situacao,
 } from "./variaveis.js";
 
-const validarCamposUsuarios = Joi.object({
+export const camposUsuarios = Joi.object({
 	nome,
 	email,
 	senha,
@@ -18,4 +19,9 @@ const validarCamposUsuarios = Joi.object({
 	nivel_acesso_id,
 });
 
-export default validarCamposUsuarios;
+export const emailSenha = Joi.object({
+	email,
+	senha: senhaLogin,
+});
+
+//export default validarCamposUsuarios;

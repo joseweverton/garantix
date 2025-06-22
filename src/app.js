@@ -4,7 +4,7 @@ import routes from "./rotas.js";
 class App {
 	constructor() {
 		this.app = express();
-		this.middlewares();
+		this.middlewares(); //middleware global
 		this.routes();
 	}
 
