@@ -1,6 +1,7 @@
 import { Router } from "express";
 import UsuariosController from "./controllers/usuarios.js";
 import { camposUsuarios, emailSenha } from "./middlewares/JOI/schemas.js";
+import autenticacaoLogin from "./middlewares/autenticacao.js";
 import {
 	validarCorpoRequisicao,
 	verificarEmailExistente,
@@ -20,6 +21,8 @@ routes.post(
 	validarCorpoRequisicao(emailSenha),
 	UsuariosController.login,
 );
+// a partir daqui tem que ter o token validado
+routes.use(autenticacaoLogin);
 routes.get("/usuarios", UsuariosController.listarUsuarios);
 
 export default routes;
