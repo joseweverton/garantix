@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
-import knex from "knex";
+import knex from "../model/conexao.js";
+
 const autenticacaoLogin = async (req, res, next) => {
 	const { authorization } = req.headers; //onde vem o bearer token
 

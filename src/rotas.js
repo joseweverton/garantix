@@ -23,6 +23,6 @@ routes.post(
 );
 // a partir daqui tem que ter o token validado
 routes.use(autenticacaoLogin);
-routes.get("/usuarios", UsuariosController.listarUsuarios);
+routes.get("/usuarios", UsuariosController.DetalharPerfilUsuarios);
 
 export default routes;

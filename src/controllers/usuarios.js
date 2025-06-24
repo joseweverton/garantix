@@ -37,13 +37,31 @@ const cadastrarUsuario = async (req, res) => {
 	}
 };
 
-const listarUsuarios = async (req, res) => {
+const DetalharPerfilUsuarios = async (req, res) => {
 	try {
-		const resultado = await knex("usuarios");
-		return res.json(resultado);
+		const { email } = req.usuario;
+		const detalharUsuario = await knex("usuarios")
+			.join("niveis_acesso", "usuarios.nivel_acesso_id", "niveis_acesso.id")
+			.where("usuarios.email", email) // <- esta linha deve estar exatamente assim
+			.select(
+				"usuarios.id",
+				"usuarios.nome",
+				"usuarios.email",
+				"usuarios.funcao",
+				"usuarios.situacao",
+				"niveis_acesso.nome as nivel_acesso", // pega o nome do nível
+				"usuarios.created_at",
+				"usuarios.updated_at",
+			)
+			.first();
+
+		return res.json({ detalharUsuario });
 	} catch (error) {
 		console.error("Erro ao buscar usuarios:", error);
-		return res.status(500).json({ error: error.message });
+		return res.status(401).json({
+			mensagem:
+				"Para acessar este recurso um token de autenticação deve ser enviado",
+		});
 	}
 };
 
@@ -85,5 +103,5 @@ const login = async (req, res) => {
 export default {
 	cadastrarUsuario,
 	login,
-	listarUsuarios,
+	DetalharPerfilUsuarios,
 };
