@@ -19,6 +19,13 @@ export const camposUsuarios = Joi.object({
 	nivel_acesso_id,
 });
 
+export const camposPeril = Joi.object({
+	nome,
+	email,
+	senha,
+	funcao,
+});
+
 export const emailSenha = Joi.object({
 	email,
 	senha: senhaLogin,
