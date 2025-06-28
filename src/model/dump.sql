@@ -1,6 +1,3 @@
-CREATE DATABASE api_projeto;
-
--- Exclui as tabelas na ordem correta
 DROP TABLE IF EXISTS processos;
 DROP TABLE IF EXISTS usuarios;
 DROP TABLE IF EXISTS status;
@@ -23,8 +20,8 @@ CREATE TABLE usuarios (
   nome VARCHAR(100) NOT NULL,
   email VARCHAR(150) NOT NULL unique,
   senha VARCHAR(255) NOT NULL,
-  funcao VARCHAR(50) NOT NULL,
-  situacao BOOLEAN DEFAULT true,
+  admin BOOLEAN NOT NULL DEFAULT false,
+  situacao BOOLEAN NOT NULL DEFAULT true,
   nivel_acesso_id INTEGER NOT NULL REFERENCES niveis_acesso(id),
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMP NOT NULL DEFAULT NOW()
@@ -41,12 +38,12 @@ CREATE TABLE processos (
 INSERT INTO niveis_acesso (nome) VALUES ('Baixo'), ('Medio'), ('Alto');
 
 -- Populando usuários
-INSERT INTO usuarios (nome, email, senha, funcao, situacao, nivel_acesso_id) 
+INSERT INTO usuarios (nome, email, senha, admin, situacao, nivel_acesso_id) 
 VALUES 
-  ('José', 'jose@email.com', 'senha123', 'Gerente', true, 3),
-  ('Maria', 'maria@email.com', 'senha123', 'Assistente', true, 1),
-  ('João', 'joao@email.com', 'senha123', 'Analista', true, 2),
-  ('Carlos', 'carlos@email.com', 'senha123', 'Analista', true, 1);
+  ('José', 'jose@email.com', 'senha123', true, true, 3),
+  ('Maria', 'maria@email.com', 'senha123', false, true, 1),
+  ('João', 'joao@email.com', 'senha123', true, true, 2),
+  ('Carlos', 'carlos@email.com', 'senha123', false, true, 1);
 
 -- Populando status
 INSERT INTO status (nome) VALUES ('Em andamento'), ('Concluído'), ('Devolvido'), ('Pendente'), ('Incluso'), ('Não iniciado'), ('Não atribuido'), ('Vencido');

@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 import knex from "../model/conexao.js";
 const cadastrarUsuario = async (req, res) => {
-	const { nome, email, senha, funcao, situacao, nivel_acesso_id } = req.body;
+	const { nome, email, senha, admin, situacao, nivel_acesso_id } = req.body;
 	try {
 		const senhaCriptografada = await bcrypt.hash(senha, 10);
 
@@ -12,11 +12,11 @@ const cadastrarUsuario = async (req, res) => {
 				nome,
 				email,
 				senha: senhaCriptografada,
-				funcao,
+				admin,
 				situacao,
 				nivel_acesso_id,
 			})
-			.returning(["id", "nome", "email", "funcao", "situacao", "nivel_acesso_id"]);
+			.returning(["id", "nome", "email", "admin", "situacao", "nivel_acesso_id"]);
 
 		if (!usuario[0]) {
 			return res.status(400).json("Usuário não foi cadastrado");
@@ -80,7 +80,7 @@ const login = async (req, res) => {
 };
 
 const editarPerfilUsuario = async (req, res) => {
-	const { nome, email, senha, funcao } = req.body;
+	const { nome, email, senha, admin } = req.body;
 	const usuarioExiste = await knex("usuarios").where({ email }).whereNot({ id: req.usuario.id }).first();
 
 	if (usuarioExiste) {
@@ -95,10 +95,10 @@ const editarPerfilUsuario = async (req, res) => {
 				nome,
 				email,
 				senha: senhaCriptografada,
-				funcao,
+				admin,
 				updated_at: new Date(),
 			})
-			.returning(["nome", "email", "funcao", "updated_at"]);
+			.returning(["nome", "email", "admin", "updated_at"]);
 		res.status(200).json({
 			mensagem: "usuário atualizado com sucesso!",
 			usuario: dadosAtualizados[0],

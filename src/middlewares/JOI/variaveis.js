@@ -7,15 +7,12 @@ export const nome = Joi.string().required().messages({
 	"string.base": "O campo nome precisa estar no formato de texto.",
 });
 
-export const email = Joi.string()
-	.required()
-	.email({ minDomainSegments: 2 })
-	.messages({
-		"string.email": "O campo email precisa ter um formato válido.",
-		"any.required": "O campo email é obrigatório.",
-		"string.empty": "O campo email é obrigatório.",
-		"string.base": "O campo email precisa estar no formato de texto.",
-	});
+export const email = Joi.string().required().email({ minDomainSegments: 2 }).messages({
+	"string.email": "O campo email precisa ter um formato válido.",
+	"any.required": "O campo email é obrigatório.",
+	"string.empty": "O campo email é obrigatório.",
+	"string.base": "O campo email precisa estar no formato de texto.",
+});
 
 export const senhaLogin = Joi.string().required().messages({
 	"any.required": "O campo senha é obrigatório",
@@ -41,29 +38,18 @@ export const senha = passwordComplexity({
 		"any.required": "O campo senha é obrigatório,não foi informado.",
 	});
 
-export const funcao = Joi.string().required().messages({
-	"any.required": "O campo função é obrigatório",
-	"string.empty": "O campo função não informado",
+export const admin = Joi.boolean().truthy("true").falsy("false").required().messages({
+	"boolean.base": "O campo admin precisa ser um Verdadeiro (Sim) ou Falso (Não)",
+	"any.required": "O campo admin é obrigatorio",
 });
 
-export const situacao = Joi.boolean()
-	.truthy("true")
-	.falsy("false")
-	.required()
-	.messages({
-		"boolean.base":
-			"O campo situação precisa ser um Verdadeiro (Ativo) ou Falso (Inativo)",
-		"any.required": "O campo situação do usuário é obrigatorio",
-	});
+export const situacao = Joi.boolean().truthy("true").falsy("false").required().messages({
+	"boolean.base": "O campo situação precisa ser um Verdadeiro (Ativo) ou Falso (Inativo)",
+	"any.required": "O campo situação do usuário é obrigatorio",
+});
 
-export const nivel_acesso_id = Joi.number()
-	.strict()
-	.empty(["", "Não informado"])
-	.required()
-	.positive()
-	.messages({
-		"any.required": "O campo situação do usuário é obrigatório.",
-		"number.base":
-			"O campo situação do usuário deve conter o ID do nivel de acesso.",
-		"number.positive": "O ID do nivel de acesso deve ser positivo",
-	});
+export const nivel_acesso_id = Joi.number().strict().empty(["", "Não informado"]).required().positive().messages({
+	"any.required": "O campo situação do usuário é obrigatório.",
+	"number.base": "O campo situação do usuário deve conter o ID do nivel de acesso.",
+	"number.positive": "O ID do nivel de acesso deve ser positivo",
+});
