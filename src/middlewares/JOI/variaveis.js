@@ -35,7 +35,7 @@ export const senha = passwordComplexity({
 		"passwordComplexity.uppercase": "Senha: Deve conter uma letra maiúscula",
 		"passwordComplexity.numeric": "Senha: Deve conter um número",
 		"passwordComplexity.symbol": "Senha: Deve conter um caractere especial",
-		"any.required": "O campo senha é obrigatório,não foi informado.",
+		"any.required": "O campo senha é obrigatório, não foi informado.",
 	});
 
 export const admin = Joi.boolean().truthy("true").falsy("false").required().messages({

@@ -36,7 +36,7 @@ const DetalharPerfilUsuarios = async (req, res) => {
 		const detalharUsuario = await knex("usuarios")
 			.join("niveis_acesso", "usuarios.nivel_acesso_id", "niveis_acesso.id")
 			.where("usuarios.email", email)
-			.select("usuarios.id", "usuarios.nome", "usuarios.email", "usuarios.funcao", "usuarios.situacao", "niveis_acesso.nome as nivel_acesso", "usuarios.created_at", "usuarios.updated_at")
+			.select("usuarios.id", "usuarios.nome", "usuarios.email", "usuarios.admin", "usuarios.situacao", "niveis_acesso.nome as nivel_acesso", "usuarios.created_at", "usuarios.updated_at")
 			.first();
 
 		return res.json({ detalharUsuario });
@@ -80,31 +80,30 @@ const login = async (req, res) => {
 };
 
 const editarPerfilUsuario = async (req, res) => {
-	const { nome, email, senha, admin } = req.body;
-	const usuarioExiste = await knex("usuarios").where({ email }).whereNot({ id: req.usuario.id }).first();
-
-	if (usuarioExiste) {
-		return res.status(400).json({ mensagem: "E-mail já cadastrado" });
-	}
+	const { senha } = req.body;
 	try {
+		const usuario = await knex("usuarios").where("id", req.usuario.id).first();
+
+		if (!usuario) {
+			return res.status(404).json({ Mensagem: "Usuário não encontrado" });
+		}
+
+		const senhaAtual = await bcrypt.compare(senha, usuario.senha);
+		if (senhaAtual) {
+			return res.status(400).json({ mensagem: "A nova senha não pode ser igual à senha atual." });
+		}
+
 		const senhaCriptografada = await bcrypt.hash(senha, 10);
 
-		const dadosAtualizados = await knex("usuarios")
-			.where("id", req.usuario.id)
-			.update({
-				nome,
-				email,
-				senha: senhaCriptografada,
-				admin,
-				updated_at: new Date(),
-			})
-			.returning(["nome", "email", "admin", "updated_at"]);
+		const dadosAtualizados = await knex("usuarios").where("id", req.usuario.id).update({
+			senha: senhaCriptografada,
+			updated_at: knex.fn.now(), //Fuso UTC idêntico do banco
+		});
 		res.status(200).json({
-			mensagem: "usuário atualizado com sucesso!",
-			usuario: dadosAtualizados[0],
+			mensagem: "Senha atualizada com sucesso!",
 		});
 	} catch (error) {
-		res.status(500).json({ mensagem: "Erro no servidor ao atualizar o usuário" });
+		res.status(500).json({ mensagem: "Erro no servidor ao atualizar senha - Entre em contato com administrador" });
 	}
 };
 
