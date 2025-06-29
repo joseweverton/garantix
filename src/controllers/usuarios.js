@@ -79,7 +79,7 @@ const login = async (req, res) => {
 	}
 };
 
-const editarPerfilUsuario = async (req, res) => {
+const editarSenha = async (req, res) => {
 	const { senha } = req.body;
 	try {
 		const usuario = await knex("usuarios").where("id", req.usuario.id).first();
@@ -111,5 +111,5 @@ export default {
 	cadastrarUsuario,
 	login,
 	DetalharPerfilUsuarios,
-	editarPerfilUsuario,
+	editarSenha,
 };
