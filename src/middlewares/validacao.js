@@ -27,7 +27,7 @@ export const verificarEmailExistente = async (req, res, next) => {
 	}
 };
 
-export const verificarPermissaoCadastroUsuario = async (req, res, next) => {
+export const verificarPermissao = async (req, res, next) => {
 	try {
 		const usuario = await knex("usuarios").join("niveis_acesso", "usuarios.nivel_acesso_id", "niveis_acesso.id").where("usuarios.id", req.usuario.id).select("usuarios.admin", "niveis_acesso.nome as nivel_acesso").first();
 

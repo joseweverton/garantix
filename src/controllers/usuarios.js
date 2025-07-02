@@ -107,9 +107,27 @@ const editarSenha = async (req, res) => {
 	}
 };
 
+const editarPerfilUsuario = async (req, res) => {
+	const { id } = req.params;
+	const { nome, email, senha, admin, situacao, nivel_acesso_id } = req.body;
+	try {
+		const senhaCriptografada = await bcrypt.hash(senha, 10);
+		const usuarioAtualizado = await knex("usuarios").where("id", id).update({ nome, email, senha: senhaCriptografada, admin, situacao, nivel_acesso_id, updated_at: knex.fn.now() }, "*");
+
+		if (!usuarioAtualizado[0]) {
+			return res.status(404).json({ mensagem: "Dados do usuário  não eonctrado" });
+		}
+
+		return res.status(201).json(usuarioAtualizado);
+	} catch (error) {
+		console.log(error);
+		return res.status(500).json({ mensagem: error.message });
+	}
+};
 export default {
 	cadastrarUsuario,
 	login,
 	DetalharPerfilUsuarios,
 	editarSenha,
+	editarPerfilUsuario,
 };
