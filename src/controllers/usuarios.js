@@ -120,7 +120,25 @@ const editarPerfilUsuario = async (req, res) => {
 
 		return res.status(201).json(usuarioAtualizado);
 	} catch (error) {
-		console.log(error);
+		return res.status(500).json({ mensagem: error.message });
+	}
+};
+
+const pesquisarUsuario = async (req, res) => {
+	const { nome, email } = req.query;
+	try {
+		const usuarios = await knex("usuarios")
+			.join("niveis_acesso", "usuarios.nivel_acesso_id", "niveis_acesso.id")
+			.modify((query) => {
+				if (nome) query.whereILike("usuarios.nome", `%${nome}%`);
+				if (email) query.andWhereILike("usuarios.email", `%${email}%`);
+			})
+			.select("usuarios.id", "usuarios.nome", "usuarios.email", "usuarios.admin", "usuarios.situacao", "niveis_acesso.nome as nivel_acesso");
+		if (usuarios.length === 0) {
+			return res.status(404).json({ mensagem: "Usuário não encontrado." });
+		}
+		return res.status(200).json(usuarios);
+	} catch (error) {
 		return res.status(500).json({ mensagem: error.message });
 	}
 };
@@ -130,4 +148,5 @@ export default {
 	DetalharPerfilUsuarios,
 	editarSenha,
 	editarPerfilUsuario,
+	pesquisarUsuario,
 };

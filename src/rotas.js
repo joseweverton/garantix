@@ -11,6 +11,7 @@ routes.post("/login", validarCorpoRequisicao(emailSenha), UsuariosController.log
 routes.use(autenticacaoLogin);
 routes.post("/usuarios", verificarPermissao, validarCorpoRequisicao(camposUsuarios), verificarEmailExistente, UsuariosController.cadastrarUsuario);
 routes.get("/usuarios", UsuariosController.DetalharPerfilUsuarios);
+routes.get("/usuarios/busca", verificarPermissao, UsuariosController.pesquisarUsuario);
 routes.put("/usuarios", validarCorpoRequisicao(campoSenha), UsuariosController.editarSenha);
 routes.put("/usuarios/:id", verificarPermissao, validarCorpoRequisicao(camposUsuarios), verificarEmailExistente, UsuariosController.editarPerfilUsuario);
 export default routes;
