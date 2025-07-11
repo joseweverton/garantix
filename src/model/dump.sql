@@ -26,14 +26,43 @@ CREATE TABLE usuarios (
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
--- Tabela de processos (depois das tabelas referenciadas)
+
 CREATE TABLE processos (
-  id_processo SERIAL PRIMARY KEY,
-  solicitante VARCHAR(100) NOT NULL,
-  responsavel INTEGER REFERENCES usuarios(id),
-  status_id INTEGER REFERENCES status(id)
+  id SERIAL PRIMARY KEY,
+  id_processo BIGINT NOT NULL,
+  data_abertura TIMESTAMP NOT NULL,
+  aberto_por TEXT NOT NULL,
+  nome_arquivo TEXT NOT NULL,
+  data_importacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Tabela de processos (depois das tabelas referenciadas)
+/*CREATE TABLE processos (
+    id SERIAL PRIMARY KEY,
+    id_processo BIGINT NOT NULL,
+    data_abertura DATE NOT NULL,
+    aberto_por TEXT NOT NULL,
+    id_tipo_de_Processo BIGINT NOT NULL, 
+    tipo_processo TEXT NOT NULL,
+    id_estabelecimento BIGINT,
+    estabelecimento TEXT,
+    situacao TEXT,
+    reservado CHAR(1),
+    reservado_por TEXT,
+    documentos_obrigatorios CHAR(1),
+    documentos_faltantes TEXT,
+    sg TEXT,
+    chassi TEXT,
+    km INTEGER,
+    data_abertura_os DATE,
+    data_ultimo_apontamento DATE,
+    valor_peca NUMERIC(12, 2),
+    valor_mo NUMERIC(12, 2),
+    cit TEXT,
+    nome_arquivo TEXT NOT NULL,
+    data_importacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+*/
 -- Populando níveis de acesso
 INSERT INTO niveis_acesso (nome) VALUES ('Baixo'), ('Medio'), ('Alto');
 
@@ -48,9 +77,4 @@ VALUES
 -- Populando status
 INSERT INTO status (nome) VALUES ('Em andamento'), ('Concluído'), ('Devolvido'), ('Pendente'), ('Incluso'), ('Não iniciado'), ('Não atribuido'), ('Vencido');
 
--- Populando processos
-INSERT INTO processos (solicitante, responsavel, status_id) VALUES 
-  ('Julio Cesar', 1, 1),   -- José responsável, status: Em andamento
-  ('Aline Menezes', 2, 2),   -- Maria responsável, status: Concluído
-  ('Afonso Aguiar', 3, 4), -- João responsável, status: Pendente
-  ('Amanda Dias', 4, 3);   -- Carlos responsável, status: Devolvido
+
